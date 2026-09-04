@@ -22,6 +22,7 @@ def main() -> int:
     # コマンドライン引数がconfigファイル名１つであるかを確認
 
     # configファイルを読み込んでパースする
+    config = load_config("config.txt")  # TODO: 実際にはコマンドライン引数から取得する
 
     # configの内容を検証し、エラーチェック、下準備
 
