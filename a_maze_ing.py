@@ -1,4 +1,6 @@
 #! /usr/bin/env python3
+import sys
+
 
 def load_config(filename: str) -> dict[str, str]:
     """Load maze configuration from a file.
@@ -45,4 +47,4 @@ def main(args: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
