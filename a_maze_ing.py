@@ -1,3 +1,22 @@
+def load_config(filename: str) -> dict[str, str]:
+    """Load maze configuration from a file.
+
+    The configuration file uses one KEY=VALUE pair per line.
+    Lines beginning with '#' are ignored.
+
+    Args:
+        filename: Path to the configuration file.
+
+    Returns:
+        A dictionary containing raw configuration values.
+
+    Raises:
+        OSError: If the configuration file cannot be opened.
+        ValueError: If the configuration syntax is invalid.
+    """
+    pass  # TODO: configファイルを読み込み、KEY=VALUEを解析してdictで返す
+
+
 def main() -> int:
     # コマンドライン引数がconfigファイル名１つであるかを確認
 
