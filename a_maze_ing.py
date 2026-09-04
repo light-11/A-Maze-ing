@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 def load_config(filename: str) -> dict[str, str]:
     """Load maze configuration from a file.
 
@@ -17,12 +19,15 @@ def load_config(filename: str) -> dict[str, str]:
     pass  # TODO: configファイルを読み込み、KEY=VALUEを解析してdictで返す
 
 
-def main() -> int:
+def main(args: list[str]) -> int:
     """Run the A-Maze-ing program."""
     # コマンドライン引数がconfigファイル名１つであるかを確認
+    if len(args) != 2:
+        print("Usage: python a_maze_ing.py <config_file>")
+        return 1
 
     # configファイルを読み込んでパースする
-    config = load_config("config.txt")  # TODO: 実際にはコマンドライン引数から取得する
+    config = load_config(args[1])
 
     # configの内容を検証し、エラーチェック、下準備
 
