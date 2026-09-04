@@ -6,7 +6,8 @@ def load_config(filename: str) -> dict[str, str]:
     """Load maze configuration from a file.
 
     The configuration file uses one KEY=VALUE pair per line.
-    Lines beginning with '#' are ignored.
+    Blank lines and lines whose first non-whitespace character is '#'
+    are ignored.
 
     Args:
         filename: Path to the configuration file.
@@ -18,18 +19,35 @@ def load_config(filename: str) -> dict[str, str]:
         OSError: If the configuration file cannot be opened.
         ValueError: If the configuration syntax is invalid.
     """
-    pass  # TODO: configファイルを読み込み、KEY=VALUEを解析してdictで返す
+    if not filename:
+        raise ValueError("Filename must be provided")
+    config: dict[str, str] = {}
+    with open(filename, "r", encoding="utf-8") as file:
+        for line in file:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" not in line:
+                raise ValueError(f"Invalid configuration syntax: {line}")
+
+            key, value = line.split("=", 1)
+            config[key.strip()] = value.strip()
+    return config
 
 
 def main(args: list[str]) -> int:
     """Run the A-Maze-ing program."""
     # コマンドライン引数がconfigファイル名１つであるかを確認
     if len(args) != 2:
-        print("Usage: python a_maze_ing.py <config_file>")
+        print("Usage: python3 a_maze_ing.py <config_file>")
         return 1
 
     # configファイルを読み込んでパースする
-    config = load_config(args[1])
+    try:
+        config = load_config(args[1])
+    except (OSError, ValueError) as e:
+        print(f"Error: {e}")
+        return 1
 
     # configの内容を検証し、エラーチェック、下準備
 
