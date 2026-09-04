@@ -18,6 +18,7 @@ def load_config(filename: str) -> dict[str, str]:
 
 
 def main() -> int:
+    """Run the A-Maze-ing program."""
     # コマンドライン引数がconfigファイル名１つであるかを確認
 
     # configファイルを読み込んでパースする
