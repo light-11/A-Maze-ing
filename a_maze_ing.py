@@ -134,10 +134,10 @@ def validate_config(config: dict[str, str]) -> MazeConfig:
     # Validate perfect flag
     if config["PERFECT"].lower() == "true":
         perfect = True
-    elif config["PERFECT"].lower() == "false":
+    elif config["PERFECT"].lower() in ("false", ""):
         perfect = False
     else:
-        raise ValueError("PERFECT must be 'true' or 'false'")
+        raise ValueError("PERFECT must be 'True', 'False', or empty")
 
     # Validate seed
     if "SEED" in config:
