@@ -35,7 +35,11 @@ def main(args: list[str]) -> int:
     solve_maze(maze)
 
     # outputファイルを作成する
-    write_maze(maze, maze_config.output_file)
+    try:
+        write_maze(maze, maze_config.output_file)
+    except OSError as e:
+        print(f"Error: {e}")
+        return 1
 
     # maze を表示する
     visualize_maze(maze)
