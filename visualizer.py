@@ -1,8 +1,20 @@
 from maze import Maze
 
 
-def render_ascii(maze: Maze, show_solution: bool) -> None:
+def render_ascii(
+        maze: Maze,
+        show_solution: bool,
+        wall_color: bool
+        ) -> None:
     """Print the maze as ASCII art."""
+
+    if wall_color:
+        set_color = "\033[34m"
+        reset_color = "\033[0m"
+    else:
+        set_color = ""
+        reset_color = ""
+
     print_grid = [row.copy() for row in maze.grid]
 
     entry_x = 2 * maze.entry[0] + 1
@@ -13,8 +25,7 @@ def render_ascii(maze: Maze, show_solution: bool) -> None:
     if show_solution and maze.solution is not None:
         current_x = entry_x
         current_y = entry_y
-        solution = maze.solution.copy()
-        for move in solution:
+        for move in maze.solution:
             if move == "N":
                 print_grid[current_y - 1][current_x] = 4
                 current_y -= 2
@@ -38,7 +49,7 @@ def render_ascii(maze: Maze, show_solution: bool) -> None:
             if cell == 0:
                 line += ("  ")
             elif cell == 1:
-                line += "##"
+                line += f"{set_color}##{reset_color}"
             elif cell == 2:
                 line += "S "
             elif cell == 3:
@@ -70,9 +81,10 @@ def read_menu() -> str:
 def visualize_maze(maze: Maze) -> str:
     """Run the terminal visualizer."""
     show_solution = False
+    wall_color = False
 
     while True:
-        render_ascii(maze, show_solution)
+        render_ascii(maze, show_solution, wall_color)
         print_menu()
 
         selected = read_menu()
@@ -82,6 +94,6 @@ def visualize_maze(maze: Maze) -> str:
         elif selected == "2":
             show_solution = not show_solution
         elif selected == "3":
-            pass
+            wall_color = not wall_color
         elif selected == "4":
             return selected
