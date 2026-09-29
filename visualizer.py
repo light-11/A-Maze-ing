@@ -67,15 +67,39 @@ def print_menu() -> None:
     print("[2] Show / hide solution")
     print("[3] Change wall color")
     print("[4] Quit")
+    return
 
 
 def read_menu() -> str:
     """Read a valid menu selection."""
+    # 下に１行空白を確保してから、１行上に戻る
+    print()
+    print("\033[1A", end="")
+
+    # 正しい選択肢が入力されるまでループ
     while True:
         selected = input("> ")
 
         if selected in ("1", "2", "3", "4"):
             return selected
+
+        # 誤入力は１行戻して消去
+        print("\033[1A\033[J", end="")
+
+
+def enter_visualizer() -> None:
+    """Enter the alternate terminal screen."""
+    print("\033[?1049h", end="", flush=True)
+
+
+def leave_visualizer() -> None:
+    """Leave the alternate terminal screen."""
+    print("\033[?1049l", end="", flush=True)
+
+
+def clear_visualizer() -> None:
+    """Clear the visualizer screen and move cursor home."""
+    print("\033[H\033[J", end="", flush=True)
 
 
 def visualize_maze(maze: Maze) -> str:
@@ -83,17 +107,23 @@ def visualize_maze(maze: Maze) -> str:
     show_solution = False
     wall_color = False
 
-    while True:
-        render_ascii(maze, show_solution, wall_color)
-        print_menu()
+    enter_visualizer()
 
-        selected = read_menu()
+    try:
+        while True:
+            clear_visualizer()
+            render_ascii(maze, show_solution, wall_color)
+            print_menu()
 
-        if selected == "1":
-            return selected
-        elif selected == "2":
-            show_solution = not show_solution
-        elif selected == "3":
-            wall_color = not wall_color
-        elif selected == "4":
-            return selected
+            selected = read_menu()
+
+            if selected == "1":
+                return selected
+            elif selected == "2":
+                show_solution = not show_solution
+            elif selected == "3":
+                wall_color = not wall_color
+            elif selected == "4":
+                return selected
+    finally:
+        leave_visualizer()
