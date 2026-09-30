@@ -31,8 +31,6 @@ def write_maze(maze: Maze, filename: str) -> None:
     if maze.solution is not None:
         output_str += "".join(maze.solution) + "\n"
 
-    print(output_str, end="")
-
     with open(filename, "w", encoding="utf-8") as file:
         file.write(output_str)
 
