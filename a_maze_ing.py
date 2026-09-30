@@ -9,6 +9,7 @@ from visualizer import visualize_maze
 
 def main(args: list[str]) -> int:
     """Run the A-Maze-ing program."""
+
     # コマンドライン引数がconfigファイル名１つであるかを確認
     if len(args) != 2:
         print("Usage: python3 a_maze_ing.py <config_file>")
@@ -28,23 +29,30 @@ def main(args: list[str]) -> int:
         print(f"Error: {e}")
         return 1
 
-    # maze を生成する
-    maze = generate_maze(maze_config)
+    while True:
 
-    # 最短経路を求める
-    solve_maze(maze)
+        # maze を生成する
+        maze = generate_maze(maze_config)
 
-    # outputファイルを作成する
-    try:
-        write_maze(maze, maze_config.output_file)
-    except OSError as e:
-        print(f"Error: {e}")
-        return 1
+        # 最短経路を求める
+        solve_maze(maze)
 
-    # maze を表示する
-    visualize_maze(maze)
+        # outputファイルを作成する
+        try:
+            write_maze(maze, maze_config.output_file)
+        except OSError as e:
+            print(f"Error: {e}")
+            return 1
 
-    # ボーナスで追加操作を入れるならこの辺？
+        # maze を表示する
+        selected = visualize_maze(maze)
+
+        if selected == "1":
+            continue      # regenerate
+        elif selected == "4":
+            break         # quit
+
+        # ボーナスで追加操作を入れるならこの辺？
 
     return 0
 
