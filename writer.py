@@ -5,10 +5,10 @@ def grid_to_hex(grid: list[list[int]], x: int, y: int) -> str:
     """Convert one logical maze cell to a hexadecimal wall value."""
 
     num = (
-        grid[2 * y][2 * x + 1] * 1 +
-        grid[2 * y + 1][2 * x + 2] * 2 +
-        grid[2 * y + 2][2 * x + 1] * 4 +
-        grid[2 * y + 1][2 * x] * 8
+        grid[2 * x + 1][2 * y] * 1 +
+        grid[2 * x + 2][2 * y + 1] * 2 +
+        grid[2 * x + 1][2 * y + 2] * 4 +
+        grid[2 * x][2 * y + 1] * 8
     )
     return format(num, 'X')
 
