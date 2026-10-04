@@ -15,7 +15,7 @@ def render_ascii(
         set_color = ""
         reset_color = ""
 
-    print_grid = [row.copy() for row in maze.grid]
+    print_grid = [column.copy() for column in maze.grid]
 
     entry_x = 2 * maze.entry[0] + 1
     entry_y = 2 * maze.entry[1] + 1
@@ -27,34 +27,34 @@ def render_ascii(
         current_y = entry_y
         for move in maze.solution:
             if move == "N":
-                print_grid[current_y - 1][current_x] = 4
+                print_grid[current_x][current_y - 1] = 4
                 current_y -= 2
             elif move == "E":
-                print_grid[current_y][current_x + 1] = 4
+                print_grid[current_x + 1][current_y] = 4
                 current_x += 2
             elif move == "S":
-                print_grid[current_y + 1][current_x] = 4
+                print_grid[current_x][current_y + 1] = 4
                 current_y += 2
             elif move == "W":
-                print_grid[current_y][current_x - 1] = 4
+                print_grid[current_x - 1][current_y] = 4
                 current_x -= 2
-            print_grid[current_y][current_x] = 4
+            print_grid[current_x][current_y] = 4
 
-    print_grid[entry_y][entry_x] = 2
-    print_grid[exit_y][exit_x] = 3
+    print_grid[entry_x][entry_y] = 2
+    print_grid[exit_x][exit_y] = 3
 
-    for row in print_grid:
+    for  y in range(maze.height * 2 + 1):
         line = ""
-        for cell in row:
-            if cell == 0:
+        for x in range(maze.width * 2 + 1):
+            if print_grid[x][y] == 0:
                 line += ("  ")
-            elif cell == 1:
+            elif print_grid[x][y] == 1:
                 line += f"{set_color}##{reset_color}"
-            elif cell == 2:
+            elif print_grid[x][y] == 2:
                 line += "S "
-            elif cell == 3:
+            elif print_grid[x][y] == 3:
                 line += "G "
-            elif cell == 4:
+            elif print_grid[x][y] == 4:
                 line += ".."
         print(line)
     return
