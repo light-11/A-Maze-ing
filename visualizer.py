@@ -43,7 +43,7 @@ def render_ascii(
     print_grid[entry_x][entry_y] = 2
     print_grid[exit_x][exit_y] = 3
 
-    for  y in range(maze.height * 2 + 1):
+    for y in range(maze.height * 2 + 1):
         line = ""
         for x in range(maze.width * 2 + 1):
             if print_grid[x][y] == 0:
