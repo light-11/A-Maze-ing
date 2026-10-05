@@ -10,6 +10,7 @@ import random
 def generate_maze(config: MazeConfig) -> Maze:
     """Generate the maze."""
 
+    rng = random.Random(config.seed)
     wid = config.width
     hei = config.height
     grid_tup = cell_to_grid(wid, hei)
@@ -39,7 +40,7 @@ def generate_maze(config: MazeConfig) -> Maze:
                     next_option.append((next_x, next_y, dir))
 
         if next_option:
-            next_x, next_y, dir = random.choice(next_option)
+            next_x, next_y, dir = rng.choice(next_option)
             wall_x, wall_y = get_wall_position(current[0], current[1], dir)
             grid[wall_x][wall_y] = 0
             stack.append((next_x, next_y))
