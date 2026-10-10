@@ -1,18 +1,28 @@
-from config import MazeConfig
-from maze import Maze
-from maze_utils import cell_to_grid
-from maze_utils import get_next_cell
-from maze_utils import is_inside
-from maze_utils import get_wall_position
+from .maze import Maze
+from .maze_utils import cell_to_grid
+from .maze_utils import get_next_cell
+from .maze_utils import is_inside
+from .maze_utils import get_wall_position
 import random
 
 
-def generate_maze(config: MazeConfig) -> Maze:
-    """Generate the maze."""
+def make_non_perfect(maze: Maze) -> None:
+    """Modify a perfect maze into a non-perfect maze."""
+    pass
 
-    rng = random.Random(config.seed)
-    wid = config.width
-    hei = config.height
+
+def make_perfect(
+    width: int,
+    height: int,
+    entry: tuple[int, int],
+    exit: tuple[int, int],
+    seed: int | None = None,
+) -> Maze:
+    """Generate a perfect maze."""
+
+    rng = random.Random(seed)
+    wid = width
+    hei = height
     grid_tup = cell_to_grid(wid, hei)
 
     # 全セルが1のgridを生成
@@ -26,8 +36,8 @@ def generate_maze(config: MazeConfig) -> Maze:
 
     visited = set()
     stack = []
-    stack.append(config.entry)
-    visited.add((config.entry))
+    stack.append(entry)
+    visited.add((entry))
 
     while stack:
         current = stack[-1]
@@ -53,7 +63,31 @@ def generate_maze(config: MazeConfig) -> Maze:
         width=wid,
         height=hei,
         grid=grid,
-        entry=config.entry,
-        exit=config.exit,
+        entry=entry,
+        exit=exit,
         solution=None,
     )
+
+
+def generate_maze(
+    width: int,
+    height: int,
+    entry: tuple[int, int],
+    exit: tuple[int, int],
+    perfect: bool,
+    seed: int | None = None,
+) -> Maze:
+    """Generate the maze."""
+
+    maze = make_perfect(
+        width,
+        height,
+        entry,
+        exit,
+        seed,
+    )
+
+    if not perfect:
+        make_non_perfect(maze)
+
+    return maze

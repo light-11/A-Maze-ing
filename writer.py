@@ -1,4 +1,4 @@
-from maze import Maze
+from mazegen.maze import Maze
 
 
 def grid_to_hex(grid: list[list[int]], x: int, y: int) -> str:

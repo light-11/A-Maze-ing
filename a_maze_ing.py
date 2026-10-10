@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 import sys
 from config import load_config, validate_config
-from generator import generate_maze
+from mazegen.generator import generate_maze
 from solver import solve_maze
 from writer import write_maze
 from visualizer import visualize_maze
@@ -32,7 +32,14 @@ def main(args: list[str]) -> int:
     while True:
 
         # maze を生成する
-        maze = generate_maze(maze_config)
+        maze = generate_maze(
+            maze_config.width,
+            maze_config.height,
+            maze_config.entry,
+            maze_config.exit,
+            maze_config.perfect,
+            maze_config.seed
+        )
 
         # 最短経路を求める
         solve_maze(maze)
