@@ -1,7 +1,7 @@
-from maze import Maze
-from maze_utils import get_next_cell
-from maze_utils import is_inside
-from maze_utils import get_wall_position
+from mazegen.maze import Maze
+from mazegen.maze_utils import get_next_cell
+from mazegen.maze_utils import is_inside
+from mazegen.maze_utils import get_wall_position
 
 
 def solve_maze(maze: Maze) -> None:
