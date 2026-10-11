@@ -34,7 +34,7 @@ def make_non_perfect(
                     if is_inside(next_x, next_y, wid, hei):
                         if (next_x, next_y) not in maze.logo_cells:
                             wall_dirs.append(dir)
-            if wall_count == 3:
+            if wall_count == 3 and wall_dirs:
                 dir = rng.choice(wall_dirs)
                 wall_x, wall_y = get_wall_position(x, y, dir)
                 maze.grid[wall_x][wall_y] = 0
