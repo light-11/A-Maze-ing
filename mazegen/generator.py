@@ -3,6 +3,10 @@ from .maze_utils import cell_to_grid
 from .maze_utils import get_next_cell
 from .maze_utils import is_inside
 from .maze_utils import get_wall_position
+from .logo42 import is_logo_size_valid
+from .logo42 import is_logo_position_valid
+from .logo42 import create_logo_cells
+
 import random
 
 
@@ -25,12 +29,23 @@ def make_perfect(
     hei = height
     grid_tup = cell_to_grid(wid, hei)
 
+    if not is_logo_size_valid(width, height):
+        print("Error: Maze is too small for the 42 logo.")
+        logo_cells = set()
+    else:
+        logo_cells = create_logo_cells(wid, hei)
+
+    if not is_logo_position_valid(logo_cells, entry, exit):
+        raise ValueError("Entry or exit overlaps the 42 logo.")
+
     # 全セルが1のgridを生成
     grid = [[1 for i in range(grid_tup[1])] for i in range(grid_tup[0])]
 
     # 論理セルを0に変換
     for y in range(hei):
         for x in range(wid):
+            if (x, y) in logo_cells:
+                continue
             grid_x, grid_y = cell_to_grid(x, y)
             grid[grid_x][grid_y] = 0
 
@@ -46,7 +61,10 @@ def make_perfect(
         for dir in dirs:
             next_x, next_y = get_next_cell(current[0], current[1], dir)
             if is_inside(next_x, next_y, wid, hei):
-                if (next_x, next_y) not in visited:
+                if (
+                    (next_x, next_y) not in visited
+                    and (next_x, next_y) not in logo_cells
+                ):
                     next_option.append((next_x, next_y, dir))
 
         if next_option:
@@ -66,6 +84,7 @@ def make_perfect(
         entry=entry,
         exit=exit,
         solution=None,
+        logo_cells=logo_cells,
     )
 
 
