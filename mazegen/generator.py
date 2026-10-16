@@ -10,9 +10,34 @@ from .logo42 import create_logo_cells
 import random
 
 
-def make_non_perfect(maze: Maze) -> None:
+def make_non_perfect(
+    maze: Maze,
+    seed: int | None = None,
+) -> None:
     """Modify a perfect maze into a non-perfect maze."""
-    pass
+
+    wid = maze.width
+    hei = maze.height
+    rng = random.Random(seed)
+    dirs = ["N", "E", "S", "W"]
+    for y in range(hei):
+        for x in range(wid):
+            if (x, y) in maze.logo_cells:
+                continue
+            wall_count = 0
+            wall_dirs = []
+            for dir in dirs:
+                wall_x, wall_y = get_wall_position(x, y, dir)
+                if maze.grid[wall_x][wall_y] == 1:
+                    wall_count += 1
+                    next_x, next_y = get_next_cell(x, y, dir)
+                    if is_inside(next_x, next_y, wid, hei):
+                        if (next_x, next_y) not in maze.logo_cells:
+                            wall_dirs.append(dir)
+            if wall_count == 3 and wall_dirs:
+                dir = rng.choice(wall_dirs)
+                wall_x, wall_y = get_wall_position(x, y, dir)
+                maze.grid[wall_x][wall_y] = 0
 
 
 def make_perfect(
@@ -107,6 +132,6 @@ def generate_maze(
     )
 
     if not perfect:
-        make_non_perfect(maze)
+        make_non_perfect(maze, seed)
 
     return maze
