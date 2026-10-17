@@ -50,7 +50,7 @@ make clean                            # キャッシュ等の削除
 単純な構造で、ループのない完全迷路を生成できることが採用理由です。
 
 - **PERFECT=True**：42ロゴを除くセルをDFSで接続し、ループのない完全迷路を生成
-- **PERFECT=False**：【NON-PERFECT実装後に記載】
+- **PERFECT=False**：完全迷路の生成後、行き止まりのセルに隣接する壁をランダムに壊し、複数のループのある非完全迷路を生成
 
 ### 42 Pattern
 
@@ -123,7 +123,37 @@ SSSENENESSENNENEEESWSEEEESSSWSWSSWWSWNWWSSWSEENEEESEEE
 
 ## Reusable Module
 
-【要記載：mazegenの公開API、インストール方法、使用例】
+迷路生成機能を独立したPythonパッケージ `mazegen` として提供しています。
+
+### Installation
+
+リポジトリ直下のwheelファイルからインストールできます。
+
+```bash
+python3 -m pip install mazegen-1.0.0-py3-none-any.whl
+```
+
+### Usage
+
+```python
+from mazegen.generator import MazeGenerator
+
+generator = MazeGenerator(
+    width=10,
+    height=10,
+    entry=(0, 0),
+    exit=(9, 9),
+    perfect=True,
+    seed=42,
+)
+
+maze = generator.generate()
+
+print(maze.grid)
+print(maze.solution)
+```
+
+`generate()` は `Maze` オブジェクトを返し、`grid` から迷路の構造、`solution` から最短経路を取得できます。
 
 ## Team and Project Management
 
