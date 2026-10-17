@@ -16,6 +16,9 @@ def grid_to_hex(grid: list[list[int]], x: int, y: int) -> str:
 def write_maze(maze: Maze, filename: str) -> None:
     """Write the maze to an output file."""
 
+    if maze.solution is None:
+        raise ValueError("Maze solution is not available.")
+
     output_str = ""
     for y in range(maze.height):
         for x in range(maze.width):

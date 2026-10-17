@@ -125,5 +125,7 @@ def visualize_maze(maze: Maze) -> str:
                 wall_color = not wall_color
             elif selected == "4":
                 return selected
+    except (KeyboardInterrupt, EOFError):
+        return "4"
     finally:
         leave_visualizer()
