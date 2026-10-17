@@ -2,7 +2,6 @@
 import sys
 from config import load_config, validate_config
 from mazegen.generator import generate_maze
-from mazegen.solver import solve_maze
 from writer import write_maze
 from visualizer import visualize_maze
 
@@ -43,9 +42,6 @@ def main(args: list[str]) -> int:
         except ValueError as e:
             print(f"Error: {e}")
             return 1
-
-        # 最短経路を求める
-        solve_maze(maze)
 
         # outputファイルを作成する
         try:
