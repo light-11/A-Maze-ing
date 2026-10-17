@@ -50,7 +50,7 @@ def main(args: list[str]) -> int:
         # outputファイルを作成する
         try:
             write_maze(maze, maze_config.output_file)
-        except OSError as e:
+        except (OSError, ValueError) as e:
             print(f"Error: {e}")
             return 1
 
