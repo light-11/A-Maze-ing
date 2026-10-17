@@ -29,6 +29,55 @@ class MazeGenerator:
         self.exit = exit
         self.perfect = perfect
         self.seed = seed
+        self.validate()
+
+    def validate(self) -> None:
+        """Validate maze generator parameters."""
+
+        # Validate width and height
+        try:
+            self.width = int(self.width)
+            self.height = int(self.height)
+        except (ValueError, TypeError):
+            raise ValueError("Width and height must be integers")
+        if self.width <= 0 or self.height <= 0:
+            raise ValueError("Width and height must be positive integers")
+
+        # Validate entry and exit points
+        try:
+            entry_list = [int(value) for value in self.entry]
+            exit_list = [int(value) for value in self.exit]
+        except (ValueError, TypeError):
+            raise ValueError("Entry and exit must be integers")
+        if len(entry_list) != 2 or len(exit_list) != 2:
+            raise ValueError("Entry and exit must contain two coordinates")
+        self.entry = (entry_list[0], entry_list[1])
+        self.exit = (exit_list[0], exit_list[1])
+        if not (
+            0 <= self.entry[0] < self.width
+            and 0 <= self.entry[1] < self.height
+        ):
+            raise ValueError("Entry point must be within maze bounds")
+
+        if not (
+            0 <= self.exit[0] < self.width
+            and 0 <= self.exit[1] < self.height
+        ):
+            raise ValueError("Exit point must be within maze bounds")
+
+        if self.entry == self.exit:
+            raise ValueError("Entry and exit points must be different")
+
+        # Validate perfect flag
+        if not isinstance(self.perfect, bool):
+            raise ValueError("PERFECT must be True or False")
+
+        # Validate seed
+        if self.seed is not None:
+            try:
+                self.seed = int(self.seed)
+            except (ValueError, TypeError):
+                raise ValueError("SEED must be an integer")
 
     def generate(self) -> Maze:
         maze = self.make_perfect(
@@ -40,7 +89,6 @@ class MazeGenerator:
         )
         if not self.perfect:
             self.make_non_perfect(maze, self.seed)
-
         solve_maze(maze)
         return maze
 
