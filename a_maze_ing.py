@@ -2,7 +2,7 @@
 import sys
 from config import load_config, validate_config
 from mazegen.generator import generate_maze
-from solver import solve_maze
+from mazegen.solver import solve_maze
 from writer import write_maze
 from visualizer import visualize_maze
 
