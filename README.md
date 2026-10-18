@@ -4,18 +4,25 @@
 
 ## Description
 
-A-Maze-ingは、設定ファイルに基づいて迷路を生成し、16進数形式での出力とターミナル表示を行うPythonプロジェクトです。
+A-Maze-ingは、設定ファイルに基づいて迷路を生成し、16進数形式での出力とターミナル表示を行うPythonプロジェクト
 
-深さ優先探索（DFS）による迷路生成と、幅優先探索（BFS）による最短経路探索を実装しています。
+深さ優先探索（DFS）による迷路生成と、幅優先探索（BFS）による最短経路探索を実装
 
 ## Instructions
 
-Python 3.10以降が必要です。
+Python 3.10以降が必要
 
-```bash
-make install                          # 依存関係のインストール
+### Setup and Run
+
+```
+make install                          # 開発ツールのインストール
 python3 a_maze_ing.py config.txt      # 実行
 make run                              # デフォルト設定で実行
+```
+
+### Development
+
+```
 make debug                            # デバッグ実行
 make lint                             # flake8 / mypy
 make clean                            # キャッシュ等の削除
@@ -23,8 +30,8 @@ make clean                            # キャッシュ等の削除
 
 ## Configuration
 
-設定ファイルは1行につき1つの`KEY=VALUE`形式で記述します。
-`#`で始まる行はコメントとして無視されます。
+設定ファイルは1行につき1つの`KEY=VALUE`形式で記述
+`#`で始まる行はコメントとして無視
 
 | Key | Description | Example |
 |---|---|---|
@@ -36,25 +43,25 @@ make clean                            # キャッシュ等の削除
 | PERFECT | 完全迷路の生成 | `PERFECT=True` |
 | SEED | 乱数シード（任意） | `SEED=42` |
 
-【要確認：追加キーのデフォルト値・不正入力の扱い】
+SEED省略時はランダム生成
 
 ## Maze Generation
 
 ### Algorithm
 
-深さ優先探索（DFS）によるRecursive Backtrackingを採用しています。
+深さ優先探索（DFS）によるRecursive Backtrackingを採用
 
-未訪問の隣接セルをランダムに選び、壁を開放して探索します。
-行き止まりではスタックを使って戻ります。
+未訪問の隣接セルをランダムに選び、壁を開放して探索
+行き止まりではスタックにより戻り探索を再開
 
-単純な構造で、ループのない完全迷路を生成できることが採用理由です。
+単純な構造で、ループのない完全迷路を生成できることが採用理由
 
 - **PERFECT=True**：42ロゴを除くセルをDFSで接続し、ループのない完全迷路を生成
-- **PERFECT=False**：完全迷路の生成後、行き止まりのセルに隣接する壁をランダムに壊し、複数のループのある非完全迷路を生成
+- **PERFECT=False**：PERFECT迷路を基に、行き止まりに隣接する壁を開放してループを追加
 
 ### 42 Pattern
 
-7×5セルの42パターンを使用しています。
+7×5セルの42パターンを使用
 
 ```text
 #...###
@@ -64,20 +71,20 @@ make clean                            # キャッシュ等の削除
 ..#.###
 ```
 
-パターンを構成するセルは4方向を閉鎖し、迷路中央に配置します。
+パターンを構成するセルは4方向を閉鎖し、迷路中央に配置
 
-配置できないサイズではメッセージを表示してロゴを省略します。
-ENTRY / EXITとロゴの重複時はエラー終了します。
+配置できないサイズではメッセージを表示してロゴを省略
+ENTRY / EXITとロゴの重複時はエラー終了
 
 ### Shortest Path
 
-幅優先探索（BFS）で最短経路を探索します。
+幅優先探索（BFS）で最短経路を探索
 
-探索時に親セルと移動方向を記録し、EXITからENTRYへ逆順にたどって経路を復元します。
+探索時に親セルと移動方向を記録し、EXITからENTRYへ逆順にたどって経路を復元
 
 ## Output Format
 
-各セルの壁を1桁の16進数で表現します。
+各セルの壁を1桁の16進数で表現
 
 | Direction | Bit | Value |
 |---|---|---|
@@ -86,9 +93,9 @@ ENTRY / EXITとロゴの重複時はエラー終了します。
 | South | 2 | 4 |
 | West | 3 | 8 |
 
-壁が閉じている場合は対応するビットを1にします。
+壁が閉じている場合は対応するビットを1に指定
 
-迷路データを行単位で出力し、空行の後にENTRY、EXIT、最短経路（N/E/S/W）を記録します。
+迷路データを行単位で出力し、空行の後にENTRY、EXIT、最短経路（N/E/S/W）を記録
 
 ### 出力例
 ```text
@@ -113,7 +120,7 @@ SSSENENESSENNENEEESWSEEEESSSWSWSSWWSWNWWSSWSEENEEESEEE
 
 ## Visual Representation
 
-ターミナル上で迷路、入口、出口、最短経路を表示します。
+ターミナル上で迷路、入口、出口、最短経路を表示
 
 操作：
 - 迷路の再生成
@@ -123,11 +130,11 @@ SSSENENESSENNENEEESWSEEEESSSWSWSSWWSWNWWSSWSEENEEESEEE
 
 ## Reusable Module
 
-迷路生成機能を独立したPythonパッケージ `mazegen` として提供しています。
+迷路生成機能を独立したPythonパッケージ`mazegen`として提供
 
 ### Installation
 
-リポジトリ直下のwheelファイルからインストールできます。
+リポジトリ直下のwheelファイルからインストール可能
 
 ```bash
 python3 -m pip install mazegen-1.0.0-py3-none-any.whl
@@ -153,7 +160,7 @@ print(maze.grid)
 print(maze.solution)
 ```
 
-`generate()` は `Maze` オブジェクトを返し、`grid` から迷路の構造、`solution` から最短経路を取得できます。
+`generate()`は`Maze`オブジェクトを返し、`grid`から迷路の構造、`solution`から最短経路を取得可能
 
 ## Team and Project Management
 
@@ -166,37 +173,34 @@ print(maze.solution)
 
 ### Planning and Evolution
 
-当初は機能単位で分担し、並行して開発しました。
+機能単位で分担し、GitHubのPull Requestを通じて段階的に統合
 
-開発途中で、Config等の論理座標(x, y)と内部グリッドの配列順序が異なることによる混乱が生じたため、`grid[x][y]`に統一しました。
+当初、内部迷路データを`grid[y][x]`で開発していたが、論理座標系との不統一が開発の阻害要因となったため、`grid[x][y]`に統一
 
-また、GeneratorのConfig等への依存を解消し、再利用可能な構造とするため、関連モジュールを`mazegen/`に集約しました。
+また、再利用性を確保するために関連モジュールを`mazegen/`へ集約する過程で、Generatorの外部モジュールへの依存が課題となり、依存関係を整理するリファクタリングを実施
 
-### Retrospective
+単純な構成から段階的に実装した点は有効だったが、Generatorの再利用性を考慮した依存関係の整理は初期設計で行うのが望ましかった。
 
-**What worked well**
-
-【要記載】
-
-**What could be improved**
-
-【要記載】
-
-**Tools used**
-
-【要記載】
+開発にはPython、Git、GitHub、flake8、mypy等を使用
 
 ## Resources and AI Usage
 
 ### Resources
 
-【要記載：実際に参照した資料・ドキュメント】
+- [Algorithmic Mazes in Python: From Generation to Optimal Pathfinding](https://jp.linkedin.com/pulse/algorithmic-mazes-python-from-generation-optimal-dion-mariyanayagam-mjrze?tl=ja)
+  - DFSによるRecursive Backtrackingの迷路生成アルゴリズムを参考
+
+- [Turidus / Python-Maze](https://github.com/Turidus/Python-Maze)
+  - NON-PERFECT迷路の生成に向けて、行き止まりを減らすBraid Mazeの生成手法を参考
 
 ### AI Usage
 
-【要記載：AIを利用した作業、対象コード、検証方法】
+- Subjectの理解：英語原文の翻訳、要件の確認・解釈
+- デバッグ支援：エラーメッセージの分析、原因調査、修正方法の検討
+- テスト支援：境界条件、異常入力、迷路の制約に関する検証方法の検討
+- ドキュメント作成：READMEの構成整理、記載内容の検討
 
 ## License
 
-迷路生成器はMIT Licenseの下で再利用・再配布できます。
-詳細は`LICENSE.md`を参照してください。
+迷路生成器はMIT Licenseの下で再利用・再配布可能
+詳細は`LICENSE.md`を参照
